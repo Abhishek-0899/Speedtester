@@ -10,16 +10,16 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
-const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("");
   const router = useRouter();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) router.push("/login");
-      else 
-        {
-          setUserName(user.displayName || "User")
-          setLoading(false);}
+      else {
+        setUserName(user.displayName || "User");
+        setLoading(false);
+      }
     });
   }, []);
 
@@ -37,23 +37,25 @@ const [userName, setUserName] = useState("");
           <h1 className="text-4xl font-bold">Hello {userName}</h1>
           <p>Ready to improve your typing speed?</p>
           <div className="flex flex-col gap-3 w-full mt-2">
-            <button 
-            onClick={()=>router.push("/pages/Dashboard")}
-            className="bg-[#80B1EB] w-full border border-black rounded-md px-3 py-2 flex items-center justify-center gap-3">
+            <button
+              onClick={() => router.push("/pages/Dashboard")}
+              className="bg-blue-800 w-full border border-black rounded-md px-3 py-2 flex items-center justify-center gap-3 cursor-pointer"
+            >
               <BsFillKeyboardFill className="text-white" />
               <span>Start typing test</span>
             </button>
 
-            <button 
-            onClick={()=>router.push("/pages/leaderboard")}
-            className="bg-gray-700 w-full border border-black hover:bg-[#80B1EB] rounded-md px-3 py-2 flex items-center justify-center gap-3">
+            <button
+              onClick={() => router.push("/pages/leaderboard")}
+              className="bg-gray-700 w-full border border-black hover:bg-blue-800 rounded-md px-3 py-2 flex items-center justify-center gap-3 cursor-pointer"
+            >
               <VscGraph className="text-white" />
               <span>view Statistics</span>
             </button>
 
             <button
               onClick={() => router.push("/pages/Settings")}
-              className="bg-gray-700 w-full border border-black hover:bg-[#80B1EB] rounded-md px-3 py-2 flex items-center justify-center gap-3"
+              className="bg-gray-700 w-full border border-black hover:bg-blue-800 rounded-md px-3 py-2 flex items-center justify-center gap-3 cursor-pointer"
             >
               <FiSettings className="text-white" />
               <span>Settings</span>

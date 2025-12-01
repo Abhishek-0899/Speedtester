@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import { auth } from "@/app/lib/firebase/auth";
 import { useRouter } from "next/navigation";
 
@@ -46,7 +46,10 @@ export default function SignUpPage() {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, form.email, form.password);
+      const userCredentails = await createUserWithEmailAndPassword(auth, form.email, form.password);
+      await updateProfile(userCredentails.user,{
+        displayName:form.name
+      })
       router.push("/");
     } catch (err: any) {
       setError({ message: err.message });

@@ -10,12 +10,16 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+const [userName, setUserName] = useState("");
   const router = useRouter();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) router.push("/login");
-      else setLoading(false);
+      else 
+        {
+          setUserName(user.displayName || "User")
+          setLoading(false);}
     });
   }, []);
 
@@ -30,7 +34,7 @@ export default function Home() {
           <h1 className="text-4xl font-bold mb-4">Typing App</h1>
         </div>{" "}
         <div className="flex flex-col items-center gap-1">
-          <h1 className="text-4xl font-bold">Hello User!</h1>
+          <h1 className="text-4xl font-bold">Hello {userName}</h1>
           <p>Ready to improve your typing speed?</p>
           <div className="flex flex-col gap-3 w-full mt-2">
             <button 

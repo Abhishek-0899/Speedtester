@@ -1,74 +1,64 @@
+"use client";
 import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  Tooltip,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
-  ResponsiveContainer,
+  CartesianGrid,
+  Tooltip,
   Legend,
+  ResponsiveContainer,
 } from "recharts";
 
-const sampleData = [
-  { name: "Page A", WPM: 4000, error: 2400, Accuracy: 2325 },
-  { name: "Page B", WPM: 3000, error: 1398, Accuracy: 2220 },
-  { name: "Page C", WPM: 2000, error: 9800, Accuracy: 1000 },
-  { name: "Page D", WPM: 2780, error: 3908, Accuracy: 1500 },
-  { name: "Page E", WPM: 1890, error: 4800, Accuracy: 1890 },
-  { name: "Page F", WPM: 2390, error: 3800, Accuracy: 1500 },
-  { name: "Page G", WPM: 3490, error: 4300, Accuracy: 4500 },
-];
+export default function Chart({ sessions }: { sessions: any[] }) {
 
-export default function Chart({ isAnimationActive = true }: { isAnimationActive?: boolean }) {
+  
+  if (sessions.length === 0) return <p className="text-white mt-4">No sessions yet</p>;
+
+  // Aggregate sessions by date
+  const aggregatedData: Record<string, { WPM: number; Error: number; Accuracy: number; count: number }> = {};
+
+  sessions.forEach((session) => {
+    const date = new Date(session.date).toLocaleDateString();
+    if (!aggregatedData[date]) {
+      aggregatedData[date] = { WPM: 0, Error: 0, Accuracy: 0, count: 0 };
+    }
+    aggregatedData[date].WPM += session.wpm;
+    aggregatedData[date].Error += session.error;
+    aggregatedData[date].Accuracy += parseFloat(session.ACCURACY);
+    aggregatedData[date].count += 1;
+  });
+
+  // Calculate averages per day
+  const data = Object.keys(aggregatedData).map((date) => {
+    const dayData = aggregatedData[date];
+    return {
+      name: date,
+      WPM: +(dayData.WPM / dayData.count).toFixed(1),
+      Error: +(dayData.Error / dayData.count).toFixed(1),
+      Accuracy: +(dayData.Accuracy / dayData.count).toFixed(1),
+    };
+  });
+
   return (
-    <div style={{ width: "100%", height: 320 }}>
-      <h2 className="text-white">Chart</h2>
+    <div style={{ width: "100%", height: 400 }} className="mt-10">
+      <h2 className="text-white mb-4">Daily Typing Stats</h2>
       <ResponsiveContainer width="100%" height="100%">
-        <AreaChart data={sampleData} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
-          <defs>
-            <linearGradient id="colorWPM" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-            </linearGradient>
-            <linearGradient id="colorError" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="#82ca9d" stopOpacity={0} />
-            </linearGradient>
-            <linearGradient id="colorAccuracy" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="red" stopOpacity={0.8} />
-              <stop offset="95%" stopColor="red" stopOpacity={0} />
-            </linearGradient>
-          </defs>
+        <BarChart
+          data={data}
+          margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+          key={sessions.length} // re-render when new session is added
+        >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip cursor={false} />
           <Legend verticalAlign="top" align="right" />
-          <Area
-            type="monotone"
-            dataKey="WPM"
-            stroke="#8884d8"
-            fill="url(#colorWPM)"
-            fillOpacity={1}
-            isAnimationActive={isAnimationActive}
-          />
-          <Area
-            type="monotone"
-            dataKey="error"
-            stroke="#82ca9d"
-            fill="url(#colorError)"
-            fillOpacity={1}
-            isAnimationActive={isAnimationActive}
-          />
-          <Area
-            type="monotone"
-            dataKey="Accuracy"
-            stroke="red"
-            fill="url(#colorAccuracy)"
-            fillOpacity={1}
-            isAnimationActive={isAnimationActive}
-          />
-        </AreaChart>
+
+          <Bar dataKey="WPM" fill="blue" barSize={20} />
+          <Bar dataKey="Error" fill="red" barSize={20} />
+          <Bar dataKey="Accuracy" fill="green" barSize={20} />
+        </BarChart>
       </ResponsiveContainer>
     </div>
   );

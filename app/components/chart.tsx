@@ -11,12 +11,14 @@ import {
 } from "recharts";
 
 export default function Chart({ sessions }: { sessions: any[] }) {
-
-  
-  if (sessions.length === 0) return <p className="text-white mt-4">No sessions yet</p>;
+  if (sessions.length === 0)
+    return <p className="text-white mt-4">No sessions yet</p>;
 
   // Aggregate sessions by date
-  const aggregatedData: Record<string, { WPM: number; Error: number; Accuracy: number; count: number }> = {};
+  const aggregatedData: Record<
+    string,
+    { WPM: number; Error: number; Accuracy: number; count: number }
+  > = {};
 
   sessions.forEach((session) => {
     const date = new Date(session.date).toLocaleDateString();
@@ -41,7 +43,7 @@ export default function Chart({ sessions }: { sessions: any[] }) {
   });
 
   return (
-    <div style={{ width: "100%", height: 400 }} className="mt-10">
+    <div style={{ width: "100%", height: 400 }} className="mt-20 mb-24">
       <h2 className="text-white mb-4">Daily Typing Stats</h2>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
@@ -50,8 +52,27 @@ export default function Chart({ sessions }: { sessions: any[] }) {
           key={sessions.length} // re-render when new session is added
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          {/* <XAxis dataKey="name" /> */}
+          <XAxis
+            dataKey="name"
+            label={{
+              value: "Time →",
+              position: "insideBottom",
+              offset: -12,
+              fontWeight: "bold",
+              fill: "#FBBF24",
+            }}
+          />
+          <YAxis
+            label={{
+              value: "WPM →",
+              angle: -90,
+              offset: 10,
+              position: "insideLeft",
+              fontWeight: "bold",
+              fill: "#FBBF24",
+            }}
+          />
           <Tooltip cursor={false} />
           <Legend verticalAlign="top" align="right" />
 

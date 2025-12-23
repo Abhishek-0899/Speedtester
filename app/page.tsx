@@ -47,18 +47,13 @@ export default function Home() {
             <h1 className="">Stats</h1>
             <button
               onClick={() => router.push("./pages/login")}
-              className="border-white rounded-xl py-1.5 px-4 hover:bg-blue-900 border-[0.1px]
-                transition-all duration-500
-  
-      hover:shadow-[0_30px_80px_rgba(56,189,248,0.25)]"
+              className="border-white rounded-xl py-1.5 px-4 hover:bg-blue-900 border-[0.1px]"
             >
               Login
             </button>
             <button
               onClick={() => router.push("./pages/signup")}
-              className="border-white rounded-xl py-1.5 px-4 bg-blue-900 border-[0.1px]
-                transition-all duration-500
-      hover:shadow-[0_30px_80px_rgba(56,189,248,0.25)]"
+              className="border-white rounded-xl py-1.5 px-4 bg-blue-900 border-[0.1px]"
             >
               Sign Up
             </button>
@@ -68,7 +63,7 @@ export default function Home() {
 
       {/* Hero Section */}
 
-      <div className="w-full min-h-[80vh] flex items-center px-10 mt-1">
+      <div className="w-full min-h-[80vh] flex items-center px-10">
         <div className="max-w-7xl mx-auto">
           <div className=" flex items-center justify-between w-full gap-16">
             {/* Left Content */}
@@ -82,42 +77,23 @@ export default function Home() {
                 tests.
               </p>
 
-              <button
-                className="
-      group relative rounded-2xl p-4
-      bg-blue-900 hover:bg-blue-950 backdrop-blur-xl
-      border border-white/10
-      shadow-[0_20px_60px_rgba(0,0,0,0.6)]
-      transition-all duration-500
-
-      hover:shadow-[0_30px_80px_rgba(56,189,248,0.25)]
-    "
-              >
-                {/* className="bg-blue-800 shadow-blue-800 hover:bg-blue-900 transition px-6 py-3 rounded-xl text-white font-medium shadow-lg"> */}
+              <button className="bg-blue-800 shadow-blue-800 hover:bg-blue-900 transition px-6 py-3 rounded-xl text-white font-medium shadow-lg">
                 Start Typing Test
               </button>
             </div>
 
             {/* Right Image */}
-           <div className="relative">
-
-  {/* background light shaping */}
-  <div className="absolute -inset-40 bg-blue-600/15 blur-[160px] rounded-full" />
-  <div className="absolute -inset-24 bg-indigo-500/15 blur-[120px] rounded-full" />
-
-  {/* gravity shadow */}
-  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[70%] h-24 bg-black/70 blur-3xl" />
-
-  <Image
-    src="/laptop.png"
-    width={600}
-    height={400}
-    priority
-    className="relative z-10"
-    alt="Typing dashboard"
-  />
-</div>
-
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full"></div>
+              <Image
+                src="/laptop.png"
+                alt="Typing dashboard preview"
+                width={600}
+                height={400}
+                className="animate-[float_8s_ease-in-out_infinite]"
+                priority
+              />
+            </div>
           </div>
           {/* cards */}
           {/* Cards Section */}

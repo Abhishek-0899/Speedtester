@@ -36,7 +36,7 @@ export default function Home() {
               src="/pacman1.png"
               alt="pacman Logo"
               width={100}
-               className="animate-[float_8s_ease-in-out_infinite]"
+              className="animate-[float_8s_ease-in-out_infinite]"
               height={20}
             />
             <h1 className="text-white text-2xl font-bold">Typing Masters</h1>
@@ -45,47 +45,177 @@ export default function Home() {
           <div className="flex items-center gap-9 text-white font-bold text-xl mx-40">
             <h1 className="">Dashboard</h1>
             <h1 className="">Stats</h1>
-            <button className="border-white rounded-xl py-1.5 px-4 hover:bg-blue-900 border-[0.1px]">
+            <button
+              onClick={() => router.push("./pages/login")}
+              className="border-white rounded-xl py-1.5 px-4 hover:bg-blue-900 border-[0.1px]
+                transition-all duration-500
+  
+      hover:shadow-[0_30px_80px_rgba(56,189,248,0.25)]"
+            >
               Login
             </button>
-            <button className="border-white rounded-xl py-1.5 px-4 bg-blue-900 border-[0.1px]">
+            <button
+              onClick={() => router.push("./pages/signup")}
+              className="border-white rounded-xl py-1.5 px-4 bg-blue-900 border-[0.1px]
+                transition-all duration-500
+      hover:shadow-[0_30px_80px_rgba(56,189,248,0.25)]"
+            >
               Sign Up
             </button>
           </div>
         </div>
       </nav>
 
-      {/* next text */}
+      {/* Hero Section */}
 
-      <div className="w-full min-h-[80vh] flex items-center px-10">
-        <div className="max-w-7xl mx-auto flex items-center justify-between w-full gap-16">
-          {/* Left Content */}
-          <div className="text-white max-w-xl">
-            <h1 className="text-5xl font-semibold leading-tight mb-6">
-              Improve your Typing Skills
-            </h1>
+      <div className="w-full min-h-[80vh] flex items-center px-10 mt-1">
+        <div className="max-w-7xl mx-auto">
+          <div className=" flex items-center justify-between w-full gap-16">
+            {/* Left Content */}
+            <div className="text-white max-w-xl">
+              <h1 className="text-5xl font-semibold leading-tight mb-6">
+                Improve your Typing Skills
+              </h1>
 
-            <p className="text-gray-300 text-lg mb-8">
-              Practice your typing speed and accuracy with <br /> interactive
-              tests.
-            </p>
+              <p className="text-gray-300 text-lg mb-8">
+                Practice your typing speed and accuracy with <br /> interactive
+                tests.
+              </p>
 
-            <button className="bg-blue-600 hover:bg-blue-500 transition px-6 py-3 rounded-xl text-white font-medium shadow-lg">
-              Start Typing Test
-            </button>
+              <button
+                className="
+      group relative rounded-2xl p-4
+      bg-blue-900 hover:bg-blue-950 backdrop-blur-xl
+      border border-white/10
+      shadow-[0_20px_60px_rgba(0,0,0,0.6)]
+      transition-all duration-500
+
+      hover:shadow-[0_30px_80px_rgba(56,189,248,0.25)]
+    "
+              >
+                {/* className="bg-blue-800 shadow-blue-800 hover:bg-blue-900 transition px-6 py-3 rounded-xl text-white font-medium shadow-lg"> */}
+                Start Typing Test
+              </button>
+            </div>
+
+            {/* Right Image */}
+           <div className="relative">
+
+  {/* background light shaping */}
+  <div className="absolute -inset-40 bg-blue-600/15 blur-[160px] rounded-full" />
+  <div className="absolute -inset-24 bg-indigo-500/15 blur-[120px] rounded-full" />
+
+  {/* gravity shadow */}
+  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[70%] h-24 bg-black/70 blur-3xl" />
+
+  <Image
+    src="/laptop.png"
+    width={600}
+    height={400}
+    priority
+    className="relative z-10"
+    alt="Typing dashboard"
+  />
+</div>
+
           </div>
+          {/* cards */}
+          {/* Cards Section */}
+          <div className="relative z-10 mt-24">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 px-10">
+              {/* Card 1 */}
+              <div
+                className="
+      group relative rounded-2xl p-8
+      bg-white/5 backdrop-blur-xl
+      border border-white/10
+      shadow-[0_20px_60px_rgba(0,0,0,0.6)]
+      transition-all duration-500
+      hover:-translate-y-2
+      hover:shadow-[0_30px_80px_rgba(59,130,246,0.25)]
+    "
+              >
+                <div className="flex items-center gap-4 mb-5">
+                  <Image
+                    src="/progress.png"
+                    alt="Progress"
+                    width={42}
+                    height={42}
+                    className="group-hover:scale-110 transition"
+                  />
+                  <h3 className="text-xl font-semibold text-white">
+                    Track Your Progress
+                  </h3>
+                </div>
 
-          {/* Right Image */}
-          <div className="relative">
-            <div className="absolute inset-0 bg-blue-500/20 blur-3xl rounded-full"></div>
-            <Image
-              src="/laptop.png"
-              alt="Typing dashboard preview"
-              width={600}
-              height={400}
-              className="animate-[float_8s_ease-in-out_infinite]"
-              priority
-            />
+                <p className="text-gray-300 leading-relaxed">
+                  View your typing speed and accuracy over time to monitor your
+                  improvement.
+                </p>
+              </div>
+
+              {/* Card 2 */}
+              <div
+                className="
+      group relative rounded-2xl p-8
+      bg-white/5 backdrop-blur-xl
+      border border-white/10
+      shadow-[0_20px_60px_rgba(0,0,0,0.6)]
+      transition-all duration-500
+      hover:-translate-y-2
+      hover:shadow-[0_30px_80px_rgba(99,102,241,0.25)]
+    "
+              >
+                <div className="flex items-center gap-4 mb-5">
+                  <Image
+                    src="/settings.png"
+                    alt="Custom Tests"
+                    width={42}
+                    height={42}
+                    className="group-hover:rotate-6 transition"
+                  />
+                  <h3 className="text-xl font-semibold text-white">
+                    Customizable Tests
+                  </h3>
+                </div>
+
+                <p className="text-gray-300 leading-relaxed">
+                  Adjust the test duration, difficulty, and word set to fit your
+                  level and goals.
+                </p>
+              </div>
+
+              {/* Card 3 */}
+              <div
+                className="
+      group relative rounded-2xl p-8
+      bg-white/5 backdrop-blur-xl
+      border border-white/10
+      shadow-[0_20px_60px_rgba(0,0,0,0.6)]
+      transition-all duration-500
+      hover:-translate-y-2
+      hover:shadow-[0_30px_80px_rgba(56,189,248,0.25)]
+    "
+              >
+                <div className="flex items-center gap-4 mb-5">
+                  <Image
+                    src="/target.png"
+                    alt="Practice"
+                    width={42}
+                    height={42}
+                    className="group-hover:scale-110 transition"
+                  />
+                  <h3 className="text-xl font-semibold text-white">
+                    Improve with Practice
+                  </h3>
+                </div>
+
+                <p className="text-gray-300 leading-relaxed">
+                  By practicing regularly, you&apos;ll be able to type faster
+                  and more accurately.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

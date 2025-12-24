@@ -74,16 +74,12 @@ export default function LoginPage() {
         {/* Heading */}
         <div className="text-center mb-6">
           <h2 className="text-white text-2xl font-semibold">Welcome Back</h2>
-          <p className="text-gray-300 text-sm">
-            Log in to continue your typing practice
-          </p>
+          <p className="text-gray-300 text-sm">Log in to continue your typing practice</p>
         </div>
 
         {/* ERROR */}
         {error && (
-          <div className="bg-red-500/30 text-red-300 p-2 rounded text-sm mb-3">
-            {error.message}
-          </div>
+          <div className="bg-red-500/30 text-red-300 p-2 rounded text-sm mb-3">{error.message}</div>
         )}
 
         {/* Form */}
@@ -141,9 +137,7 @@ export default function LoginPage() {
         {/* Footer */}
         <p className="text-gray-400 text-center text-sm mt-4">
           Don’t have an account?{" "}
-          <a href="/signup" className="text-blue-400 hover:underline">
-            Sign Up
-          </a>
+          <a href="/signup" className="text-blue-400 hover:underline">Sign Up</a>
         </p>
       </div>
     </div>

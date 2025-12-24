@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "@/app/lib/firebase/auth";
 import { useRouter } from "next/navigation";
 
@@ -25,7 +25,7 @@ export default function SignUpPage() {
     password: "",
     confirmPassword: "",
   });
-  
+
 
   const [error, setError] = useState<AuthError | null>(null);
 
@@ -66,9 +66,7 @@ export default function SignUpPage() {
         </div>
 
         {error && (
-          <div className="bg-red-500/30 text-red-300 p-2 rounded text-sm mb-3">
-            {error.message}
-          </div>
+          <div className="bg-red-500/30 text-red-300 p-2 rounded text-sm mb-3">{error.message}</div>
         )}
 
         <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
@@ -120,9 +118,7 @@ export default function SignUpPage() {
 
         <p className="text-gray-400 text-center text-sm mt-4">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-400 hover:underline">
-            Log In
-          </a>
+          <a href="/login" className="text-blue-400 hover:underline">Log In</a>
         </p>
       </div>
     </div>

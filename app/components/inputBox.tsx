@@ -1,51 +1,47 @@
 "use client";
-
 import { useEffect, useState } from "react";
+import TypingText from "./typingtext";
 
 export default function InputBox() {
   const dataApi = "https://jsonplaceholder.typicode.com/comments";
   const [text, setText] = useState("");
+
   useEffect(() => {
     fetchApiData();
   }, []);
 
   const fetchApiData = async () => {
     try {
-      const res = await fetch(dataApi); // wait for fetch
-      const data = await res.json(); // wait for JSON
-      console.log("response:", data);
+      const res = await fetch(dataApi);
+      const data = await res.json();
+
       const randomIndex = Math.floor(Math.random() * data.length);
-      const rawText = data[randomIndex].body;
-      const cleantext = rawText.replace(/\n/g, " ");
-      setText(cleantext);
+      const cleanText = data[randomIndex].body.replace(/\n/g, " ");
+
+      setText(cleanText);
     } catch (e) {
-      console.log("error in finding Data", e);
+      console.log("error fetching text", e);
     }
   };
 
-  // const removeNewLine = rawText.replace(/\n/g, " ");
-  console.log("data from api is", dataApi);
   return (
-    <div className="bg-[#12172a] rounded-xl w-full mx-auto">
-      <div className="flex gap-4 p-4">
-        <textarea
-          className="text-gray-400 flex-1 border-none bg-transparent resize-none overflow-hidden"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          rows={3}
-          spellCheck={false}
-        />
+    <div className="relative bg-[#12172a] rounded-xl w-full mx-auto p-6 overflow-hidden">
+      {/* MONKEYTYPE TEXT */}
+      {text && <TypingText text={text} />}
 
-        <button className="flex bg-blue-800 rounded-xl px-3 items-center gap-4">
+      {/* BUTTON */}
+      <div className="mt-6 flex justify-end relative z-10">
+        <button className="bg-blue-800 px-4 py-2 rounded-xl flex items-center gap-2 relative overflow-hidden">
           <img
-            width="48"
-            height="48"
+            width="24"
+            height="24"
             src="https://img.icons8.com/color/48/text-cursor.png"
-            alt="text-cursor"
+            alt="cursor"
           />
-          <p className="text-sm">Start typing Test</p>
+          <span>Start typing test</span>
         </button>
       </div>
+      <div className="glowing-blue-line"></div>
     </div>
   );
 }

@@ -31,9 +31,11 @@ export default function Navbar() {
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center gap-3">
           <Image src="/pacman1.png" alt="logo" width={60} height={40} />
-          <h1 className="text-white text-xl md:text-2xl font-bold">
-            Typing Masters
-          </h1>
+          <button onClick={()=>router.push("/")}>
+            <h1 className="text-white text-xl md:text-2xl font-bold">
+              Typing Masters
+            </h1>
+          </button>
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-white font-semibold">

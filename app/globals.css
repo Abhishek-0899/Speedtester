@@ -130,17 +130,62 @@
   background-repeat: no-repeat;
   min-height: 100vh;
 }
+
 @keyframes caretBlink {
-  0% { opacity: 1; }
-  50% { opacity: 0; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .caret-blink {
-  animation: caretBlink 1s infinite;
+  border-left: 2px solid #60a5fa;
+  /* blue-400 */
+  margin-left: -1px;
+  animation: caretBlink 1s step-end infinite;
 }
+
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Glowing blue line animation */
+@keyframes glowMove {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.glowing-blue-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px; /* thickness of the line */
+  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  animation: glowMove 3s linear infinite;
+  z-index: 5;
 }

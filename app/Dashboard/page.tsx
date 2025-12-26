@@ -23,7 +23,7 @@ export default function Dashboard() {
 
           <StatCard
             title="Time Elapsed"
-            value="00:00"
+            value="00:30"
             icon={<Clock className="w-10 h-5 text-purple-400" />}
           />
 

@@ -1,25 +1,43 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-export default function TypingText({ text }) {
+export default function TypingText({ text, onComplete, disabled }) {
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
 
+  // focus always
   useEffect(() => {
-    inputRef.current.focus();
+    inputRef.current?.focus();
   }, []);
 
+  // 🔑 RESET input when new text arrives
+  useEffect(() => {
+    setInput("");
+  }, [text]);
+
   const handleChange = (e) => {
-    setInput(e.target.value);
+    if (disabled) return;
+
+    const value = e.target.value;
+
+    // prevent overflow typing
+    if (value.length > text.length) return;
+
+    setInput(value);
+
+    // 🔥 completion trigger
+    if (value.length === text.length) {
+      onComplete?.();
+    }
   };
 
   return (
     <div
-      onClick={() => inputRef.current.focus()}
-      className="font-mono leading-8 select-none whitespace-pre-wrap cursor-text"
+      onClick={() => inputRef.current?.focus()}
+      className="relative font-mono leading-8 select-none whitespace-pre-wrap cursor-text"
     >
       {text.split("").map((char, index) => {
-        let className = "text-gray-500";
+        let className = "text-gray-400 text-[19px]";
 
         if (index < input.length) {
           className =
@@ -28,8 +46,7 @@ export default function TypingText({ text }) {
               : "text-red-400";
         }
 
-        if (index === input.length) {
-        //   className += " border-blue-400 border-l-2";
+        if (index === input.length && !disabled) {
           className += " caret-blink";
         }
 

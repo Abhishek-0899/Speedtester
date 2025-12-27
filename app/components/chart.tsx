@@ -23,9 +23,26 @@ export default function Chart({ chartData }) {
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
+          <XAxis
+            dataKey="name"
+            label={{
+              value: "Day →",
+
+              position: "insideBottom",
+              fontWeight: "bold",
+              fill: "#FBBF24",
+            }}
+          />{" "}
+          <YAxis
+            label={{
+              value: "Stats →",
+              angle: -90,
+              position: "insideLeft",
+              fontWeight: "bold",
+              fill: "#FBBF24",
+            }}
+          />
+          <Tooltip cursor={false} />
           <Legend />
           <Bar dataKey="WPM" fill="#3b82f6" />
           <Bar dataKey="Accuracy" fill="#22c55e" />

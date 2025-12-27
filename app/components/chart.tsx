@@ -10,75 +10,40 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function Chart({ sessions }: { sessions: any[] }) {
-  if (sessions.length === 0)
-    return <p className="text-white mt-4">No sessions yet</p>;
-
-  // Aggregate sessions by date
-  const aggregatedData: Record<
-    string,
-    { WPM: number; Error: number; Accuracy: number; count: number }
-  > = {};
-
-  sessions.forEach((session) => {
-    const date = new Date(session.date).toLocaleDateString();
-    if (!aggregatedData[date]) {
-      aggregatedData[date] = { WPM: 0, Error: 0, Accuracy: 0, count: 0 };
-    }
-    aggregatedData[date].WPM += session.wpm;
-    aggregatedData[date].Error += session.error;
-    aggregatedData[date].Accuracy += parseFloat(session.ACCURACY);
-    aggregatedData[date].count += 1;
-  });
-
-  // Calculate averages per day
-  const data = Object.keys(aggregatedData).map((date) => {
-    const dayData = aggregatedData[date];
-    return {
-      name: date,
-      WPM: +(dayData.WPM / dayData.count).toFixed(1),
-      Error: +(dayData.Error / dayData.count).toFixed(1),
-      Accuracy: +(dayData.Accuracy / dayData.count).toFixed(1),
-    };
-  });
+export default function Chart({ chartData }) {
+  if (!chartData || chartData.length === 0) {
+    return <p className="text-gray-400 mt-10">No data yet</p>;
+  }
 
   return (
-    <div style={{ width: "100%", height: 400 }} className="mt-20 mb-24">
-      <h2 className="text-white mb-4">Daily Typing Stats</h2>
+    <div className="mt-20 h-[400px]">
+      <h2 className="text-white mb-4">Typing Progress</h2>
+
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
-          key={sessions.length} // re-render when new session is added
-        >
+        <BarChart data={chartData}>
           <CartesianGrid strokeDasharray="3 3" />
-          {/* <XAxis dataKey="name" /> */}
           <XAxis
             dataKey="name"
             label={{
-              value: "Time →",
+              value: "Day →",
               position: "insideBottom",
-              offset: -12,
               fontWeight: "bold",
               fill: "#FBBF24",
             }}
           />
           <YAxis
             label={{
-              value: "WPM →",
+              value: "Stats →",
               angle: -90,
-              offset: 10,
               position: "insideLeft",
               fontWeight: "bold",
               fill: "#FBBF24",
             }}
           />
           <Tooltip cursor={false} />
-          <Legend verticalAlign="top" align="right" />
-
-          <Bar dataKey="WPM" fill="blue" barSize={20} />
-          <Bar dataKey="Error" fill="red" barSize={20} />
-          <Bar dataKey="Accuracy" fill="green" barSize={20} />
+          <Legend />
+          <Bar dataKey="WPM" fill="#3b82f6" />
+          <Bar dataKey="Accuracy" fill="#22c55e" />
         </BarChart>
       </ResponsiveContainer>
     </div>

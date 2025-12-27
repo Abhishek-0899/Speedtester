@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import TypingText from "./typingtext";
-import { ChartArea } from "lucide-react";
 import Chart from "./chart";
 
 export default function InputBox({
@@ -12,43 +11,63 @@ export default function InputBox({
   setAccuracy,
 }) {
   const dataApi = "https://jsonplaceholder.typicode.com/comments";
+
   const [text, setText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(selectedTime);
+  const [session, setSession] = useState([]);
 
-  // ✅ Fetch random text
+  const wpmRef = useRef(0);
+  const accuracyRef = useRef(0);
+
+  // Fetch random text
   useEffect(() => {
     async function fetchData() {
-      try {
-        const res = await fetch(dataApi);
-        const data = await res.json();
-        const randomIndex = Math.floor(Math.random() * data.length);
-        setText(data[randomIndex].body.replace(/\n/g, " "));
-      } catch (e) {
-        console.error("Error fetching text", e);
-      }
+      const res = await fetch(dataApi);
+      const data = await res.json();
+      const randomIndex = Math.floor(Math.random() * data.length);
+      setText(data[randomIndex].body.replace(/\n/g, " "));
     }
     fetchData();
   }, []);
 
-  // ✅ Timer countdown
+  // Timer
   useEffect(() => {
     if (!modalOpen) return;
+
     const interval = setInterval(() => {
       setTimeLeft((t) => Math.max(t - 1, 0));
     }, 1000);
+
     return () => clearInterval(interval);
   }, [modalOpen]);
 
-  // Auto-close modal
+  // Save session ONLY when test ends
   useEffect(() => {
-    if (timeLeft === 0) setModalOpen(false);
+    if (timeLeft !== 0) return;
+
+    setModalOpen(false);
+
+    setSession((prev) => [
+      ...prev,
+      {
+        wpm: wpmRef.current,
+        accuracy: accuracyRef.current,
+        date : new Date()
+      },
+    ]);
   }, [timeLeft]);
+
+  // Data for chart
+  const chartData = session.map((val, index) => ({
+    name: `Test ${index + 1}`,
+    WPM: val.wpm,
+    Accuracy: val.accuracy,
+  }));
 
   const startTest = () => {
     setTimeLeft(selectedTime);
     setModalOpen(true);
-    // Reset stats when new test starts
     setWPM(0);
     setAccuracy(0);
   };
@@ -61,47 +80,31 @@ export default function InputBox({
   return (
     <div>
       <div className="relative bg-[#12172a] rounded-2xl p-6 shadow-lg">
-        {/* Modal */}
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-            <div className="bg-[#0d111f] rounded-2xl p-8 w-full max-w-3xl shadow-2xl border border-purple-600">
+            <div className="bg-[#0d111f] rounded-2xl p-8 w-full max-w-3xl border border-purple-600">
               <TypingText
                 text={text}
                 disabled={timeLeft === 0}
-                // ✅ LIVE update: call on every keypress
                 onTyping={(typedWords, totalWords) => {
                   const wpmCalc = Math.round((typedWords / selectedTime) * 60);
                   const accuracyCalc = Math.round(
                     (typedWords / totalWords) * 100
                   );
+
+                  wpmRef.current = wpmCalc;
+                  accuracyRef.current = accuracyCalc;
+
                   setWPM(wpmCalc);
                   setAccuracy(accuracyCalc);
                 }}
-                onComplete={() => {
-                  // Fetch new text
-                  async function fetchData() {
-                    try {
-                      const res = await fetch(dataApi);
-                      const data = await res.json();
-                      const randomIndex = Math.floor(
-                        Math.random() * data.length
-                      );
-                      setText(data[randomIndex].body.replace(/\n/g, " "));
-                    } catch (e) {
-                      console.error("Error fetching text", e);
-                    }
-                  }
-                  fetchData();
-                }}
               />
 
-              {/* Footer Controls */}
-              <div className="mt-6 flex justify-between items-center text-gray-300">
-                <span className="text-xl font-semibold">⏱ {timeLeft}s</span>
-                <span className="text-lg font-medium">Difficulty: Medium</span>
+              <div className="mt-6 flex justify-between text-gray-300">
+                <span className="text-xl">⏱ {timeLeft}s</span>
                 <button
                   onClick={() => setModalOpen(false)}
-                  className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 transition"
+                  className="px-4 py-2 rounded-xl bg-red-600"
                 >
                   Close
                 </button>
@@ -110,17 +113,15 @@ export default function InputBox({
           </div>
         )}
 
-        {/* Controls */}
-        <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
-          <h1 className="text-2xl font-extrabold">Time Needed : </h1>
+        <div className="flex justify-center gap-4 mt-4">
           {[20, 30, 60].map((time) => (
             <button
               key={time}
               onClick={() => handleTimeSelect(time)}
-              className={`px-5 py-2 rounded-xl transition font-semibold ${
+              className={`px-5 py-2 rounded-xl ${
                 selectedTime === time
-                  ? "bg-purple-600 text-white shadow-md"
-                  : "bg-blue-800 hover:bg-blue-950"
+                  ? "bg-purple-600 text-white"
+                  : "bg-blue-800"
               }`}
             >
               {time}s
@@ -129,22 +130,14 @@ export default function InputBox({
 
           <button
             onClick={startTest}
-            className="flex items-center gap-2 px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 transition text-white font-bold shadow-lg"
+            className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white"
           >
-            <img
-              width="22"
-              height="22"
-              src="https://img.icons8.com/color/48/text-cursor.png"
-              alt="cursor"
-            />
             Start Typing
           </button>
         </div>
-
-        <div className="mt-4 text-center text-gray-400 text-sm">
-          Select a time and start your typing test!
-        </div>
       </div>
+      {/* Chart */}
+      <Chart chartData={chartData} />{" "}
     </div>
   );
 }

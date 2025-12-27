@@ -166,26 +166,58 @@
   }
 }
 
-/* Glowing blue line animation */
-@keyframes glowMove {
-  0% {
-    transform: translateX(-100%);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+.animate-fadeOut {
+  animation: fadeOut 0.2s ease-in forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
   }
-  50% {
-    transform: translateX(0%);
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
-  100% {
-    transform: translateX(100%);
+}
+.animate-scaleIn {
+  animation: scaleIn 0.25s ease-out;
+}
+
+@keyframes scaleOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
   }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+.animate-scaleOut {
+  animation: scaleOut 0.2s ease-in forwards;
 }
 
 .glowing-blue-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px; /* thickness of the line */
+  height: 2px;
   background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-  animation: glowMove 3s linear infinite;
-  z-index: 5;
+  animation: glow 2.5s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.3; }
 }

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-export default function TypingText({ text, onComplete, disabled }) {
+export default function TypingText({ text, onComplete, onTyping, disabled }) {
   const [input, setInput] = useState("");
   const inputRef = useRef(null);
 
@@ -24,6 +24,13 @@ export default function TypingText({ text, onComplete, disabled }) {
     if (value.length > text.length) return;
 
     setInput(value);
+
+    // 🔹 Live stats update
+    if (onTyping) {
+      const typedWords = value.trim().split(/\s+/).length; // number of words typed
+      const totalWords = text.trim().split(/\s+/).length;
+      onTyping(typedWords, totalWords);
+    }
 
     // 🔥 completion trigger
     if (value.length === text.length) {

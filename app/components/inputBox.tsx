@@ -12,15 +12,27 @@ export default function InputBox({
 }) {
   const dataApi = "https://jsonplaceholder.typicode.com/comments";
 
+  /* ---------- LOAD SESSION SAFELY ---------- */
+  const [session, setSession] = useState(() => {
+    if (typeof window === "undefined") return [];
+    const saved = localStorage.getItem("typingSession");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [text, setText] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(selectedTime);
-  const [session, setSession] = useState([]);
 
   const wpmRef = useRef(0);
   const accuracyRef = useRef(0);
+  const testStartedRef = useRef(false);
 
-  // Fetch random text
+  /* ---------- SAVE SESSION ---------- */
+  useEffect(() => {
+    localStorage.setItem("typingSession", JSON.stringify(session));
+  }, [session]);
+
+  /* ---------- FETCH TEXT ---------- */
   useEffect(() => {
     async function fetchData() {
       const res = await fetch(dataApi);
@@ -31,7 +43,7 @@ export default function InputBox({
     fetchData();
   }, []);
 
-  // Timer
+  /* ---------- TIMER ---------- */
   useEffect(() => {
     if (!modalOpen) return;
 
@@ -42,44 +54,56 @@ export default function InputBox({
     return () => clearInterval(interval);
   }, [modalOpen]);
 
-  // Save session ONLY when test ends
+  /* ---------- SAVE TEST ON END ---------- */
   useEffect(() => {
     if (timeLeft !== 0) return;
+    if (!testStartedRef.current) return;
 
     setModalOpen(false);
+    testStartedRef.current = false;
 
     setSession((prev) => [
       ...prev,
       {
         wpm: wpmRef.current,
         accuracy: accuracyRef.current,
-        date : new Date()
+        date: new Date().toISOString(),
       },
     ]);
   }, [timeLeft]);
 
-  // Data for chart
-  const chartData = session.map((val, index) => ({
-    name: `Test ${index + 1}`,
+  /* ---------- CHART DATA ---------- */
+  const chartData = session.map((val) => ({
+    name: new Date(val.date).toLocaleString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    }),
     WPM: val.wpm,
     Accuracy: val.accuracy,
+    Error: 100 - val.accuracy,
   }));
 
+  /* ---------- ACTIONS ---------- */
   const startTest = () => {
+    if (!selectedTime) return;
+
     setTimeLeft(selectedTime);
     setModalOpen(true);
+    testStartedRef.current = true;
+
+    wpmRef.current = 0;
+    accuracyRef.current = 0;
+
     setWPM(0);
     setAccuracy(0);
-  };
-
-  const handleTimeSelect = (time) => {
-    setSelectedTime(time);
-    setTimeLeft(time);
   };
 
   return (
     <div>
       <div className="relative bg-[#12172a] rounded-2xl p-6 shadow-lg">
+
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
             <div className="bg-[#0d111f] rounded-2xl p-8 w-full max-w-3xl border border-purple-600">
@@ -87,7 +111,9 @@ export default function InputBox({
                 text={text}
                 disabled={timeLeft === 0}
                 onTyping={(typedWords, totalWords) => {
-                  const wpmCalc = Math.round((typedWords / selectedTime) * 60);
+                  const wpmCalc = Math.round(
+                    (typedWords / selectedTime) * 60
+                  );
                   const accuracyCalc = Math.round(
                     (typedWords / totalWords) * 100
                   );
@@ -117,7 +143,7 @@ export default function InputBox({
           {[20, 30, 60].map((time) => (
             <button
               key={time}
-              onClick={() => handleTimeSelect(time)}
+              onClick={() => setSelectedTime(time)}
               className={`px-5 py-2 rounded-xl ${
                 selectedTime === time
                   ? "bg-purple-600 text-white"
@@ -136,8 +162,8 @@ export default function InputBox({
           </button>
         </div>
       </div>
-      {/* Chart */}
-      <Chart chartData={chartData} />{" "}
+
+      <Chart chartData={chartData} />
     </div>
   );
 }

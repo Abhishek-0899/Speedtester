@@ -21,7 +21,7 @@ export default function Dashboard() {
           <StatCard
             title="Accuracy"
             value={accuracy ? `${accuracy}%` : "--%"}
-            footer="No data yet"
+            footer={!accuracy ? "No data yet" : ""}
             icon={<TrendingUp className="w-10 h-5 text-green-400" />}
           />
 
@@ -44,8 +44,8 @@ export default function Dashboard() {
           <InputBox
             selectedTime={selectedTime}
             setSelectedTime={setSelectedTime}
-            setWPM = {setWPM}
-            setAccuracy = {setAccuracy}
+            setWPM={setWPM}
+            setAccuracy={setAccuracy}
           />
         </div>
       </div>

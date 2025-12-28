@@ -31,7 +31,7 @@ export default function Navbar() {
       <div className="flex justify-between items-center w-full">
         <div className="flex items-center gap-3">
           <Image src="/pacman1.png" alt="logo" width={60} height={40} />
-          <button onClick={()=>router.push("/")}>
+          <button onClick={() => router.push("/")}>
             <h1 className="text-white text-xl md:text-2xl font-bold">
               Typing Masters
             </h1>
@@ -46,10 +46,10 @@ export default function Navbar() {
             Dashboard
           </Link>
           <Link
-            href="/stats"
+            href="/Stats"
             className="rounded-xl px-4 py-1.5 hover:bg-blue-900 transition"
           >
-            Stats
+            Statistics
           </Link>
 
           {!user ? (
@@ -70,13 +70,21 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Image
-                src={user.photoURL || "/avatar.png"}
-                alt="profile"
-                width={36}
-                height={36}
-                className="rounded-full border border-white/20 cursor-pointer"
-              />
+              {user.photoURL ? (
+                <img
+                  src={user.photoURL}
+                  alt="profile"
+                  className="w-9 h-9 rounded-full border border-white/20 cursor-pointer"
+                />
+              ) : (
+                <Image
+                  src="/avatar.png"
+                  alt="profile"
+                  width={36}
+                  height={36}
+                  className="rounded-full border border-white/20 cursor-pointer"
+                />
+              )}
               <button
                 type="button"
                 onClick={handleLogout}

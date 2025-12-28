@@ -5,6 +5,8 @@ import TypingText from "./typingtext";
 import Chart from "./chart";
 import { auth } from "@/app/lib/firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
+import DropDown from "./Dropdown";
+import AiSummary from "./AiSummary";
 
 export default function InputBox({
   selectedTime,
@@ -148,11 +150,12 @@ export default function InputBox({
 
         {/* TIME BUTTONS */}
         <div className="flex justify-center gap-4 mt-4">
+          <h1 className="text-center mt-2">Time :</h1>
           {[20, 30, 60].map((t) => (
             <button
               key={t}
               onClick={() => setSelectedTime(t)}
-              className={`px-5 py-2 rounded-xl ${
+              className={`px-5 py-2 rounded-xl cursor-pointer ${
                 selectedTime === t ? "bg-purple-600 text-white" : "bg-blue-800"
               }`}
             >
@@ -160,9 +163,12 @@ export default function InputBox({
             </button>
           ))}
 
+          <DropDown />
+          <AiSummary/>
+
           <button
             onClick={startTest}
-            className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white"
+            className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white cursor-pointer"
           >
             Start Typing
           </button>

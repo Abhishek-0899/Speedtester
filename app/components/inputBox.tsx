@@ -6,57 +6,105 @@ import Chart from "./chart";
 import { auth } from "@/app/lib/firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import DropDown from "./Dropdown";
-import AiSummary from "./AiSummary";
+import { useRouter } from "next/navigation";
 
 export default function InputBox({
   selectedTime,
   setSelectedTime,
   setWPM,
   setAccuracy,
+}: {
+  selectedTime: number;
+  setSelectedTime: (time: number) => void;
+  setWPM: (wpm: number) => void;
+  setAccuracy: (accuracy: number) => void;
 }) {
+  const route = useRouter();
+
+  // Enable btn on time select
+  const [testCompleted, setTextCompleted] = useState(false);
+
+  const canStartText = Boolean(selectedTime);
+  // ---------- API  ----------
   const API = "https://jsonplaceholder.typicode.com/comments";
 
   // ---------- CURRENT USER ----------
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<typeof null | { uid: string }>(null);
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (currentUser) => setUser(currentUser));
+    const unsub = onAuthStateChanged(auth, (currentUser) =>
+      setUser(currentUser)
+    );
     return () => unsub();
   }, []);
 
   // ---------- SESSION ----------
-  const [session, setSession] = useState([]);
+  const [session, setSession] = useState<
+    Array<{ wpm: number; accuracy: number; date: string }>
+  >([]);
 
-  // Load session for current user
+  // ---------- DIFFICULTY ----------
+  const [difficulty, setDifficulty] = useState("Easy");
+
+  // ✅ FIXED LOGIC (returns boolean)
+  const isEasy = (text) => text.length <= 10 && !/[^a-zA-Z0-9\s]/.test(text);
+
+  const isMedium = (text) =>
+    text.length > 10 && text.length <= 50 && /[.,!?;:]/.test(text);
+
+  const isHard = (text) => text.length > 100 && /[^a-zA-Z0-9\s]/.test(text);
+
+  // ---------- LOAD SESSION ----------
+  const storageKey = user ? `typingSession_${user.uid}` : `typingSession_local`;
+
   useEffect(() => {
-    if (!user) return;
-    const saved = localStorage.getItem(`typingSession_${user.uid}`);
+    const saved = localStorage.getItem(storageKey);
     setSession(saved ? JSON.parse(saved) : []);
-  }, [user]);
+    console.log("Loaded sessions from", storageKey, "count:", saved ? JSON.parse(saved).length : 0);
+  }, [storageKey]);
 
-  // Save session for current user
   useEffect(() => {
-    if (!user) return;
-    localStorage.setItem(`typingSession_${user.uid}`, JSON.stringify(session));
-  }, [session, user]);
+    localStorage.setItem(storageKey, JSON.stringify(session));
+    console.log("Saved sessions to", storageKey, "count:", session.length);
+  }, [session, storageKey]);
 
   // ---------- RANDOM TEXT ----------
   const [text, setText] = useState("");
+
   const loadText = async () => {
     const res = await fetch(API);
     const data = await res.json();
-    const random = Math.floor(Math.random() * data.length);
-    setText(data[random].body.replace(/\n/g, " "));
+
+    const cleaned = data.map((item) => item.body.replace(/\n/g, " "));
+
+    let pool = [];
+
+    // ✅ FIXED FILTERING
+    if (difficulty === "Easy") pool = cleaned.filter(isEasy);
+    else if (difficulty === "Medium") pool = cleaned.filter(isMedium);
+    else if (difficulty === "Hard") pool = cleaned.filter(isHard);
+    else pool = cleaned;
+
+    // safety fallback
+    if (pool.length === 0) pool = cleaned;
+
+    const random = Math.floor(Math.random() * pool.length);
+    setText(pool[random]);
   };
+
   useEffect(() => {
     loadText();
-  }, []);
+  }, [difficulty]);
 
   // ---------- TIMER ----------
   const [modalOpen, setModalOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(0);
+
   useEffect(() => {
     if (!modalOpen) return;
-    const interval = setInterval(() => setTimeLeft((t) => Math.max(t - 1, 0)), 1000);
+    const interval = setInterval(
+      () => setTimeLeft((t) => Math.max(t - 1, 0)),
+      1000
+    );
     return () => clearInterval(interval);
   }, [modalOpen]);
 
@@ -70,7 +118,7 @@ export default function InputBox({
     finishTest();
   }, [timeLeft]);
 
-  // ---------- START / FINISH TEST ----------
+  // ---------- START / FINISH ----------
   const startTest = () => {
     if (!selectedTime) return;
     setTimeLeft(selectedTime);
@@ -87,12 +135,13 @@ export default function InputBox({
   const finishTest = () => {
     setModalOpen(false);
     testStartedRef.current = false;
-
+    setTextCompleted(true);
     setSession((prev) => [
       ...prev,
       {
         wpm: wpmRef.current,
         accuracy: accuracyRef.current,
+        difficulty, // ✅ ADD THIS
         date: new Date().toISOString(),
       },
     ]);
@@ -115,7 +164,6 @@ export default function InputBox({
   return (
     <div>
       <div className="relative bg-[#12172a] rounded-2xl p-6 shadow-lg">
-        {/* MODAL */}
         {modalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
             <div className="bg-[#0d111f] rounded-2xl p-8 w-full max-w-3xl border border-purple-600">
@@ -148,14 +196,14 @@ export default function InputBox({
           </div>
         )}
 
-        {/* TIME BUTTONS */}
         <div className="flex justify-center gap-4 mt-4">
           <h1 className="text-center mt-2">Time :</h1>
-          {[20, 30, 60].map((t) => (
+
+          {[10,20, 30, 60].map((t) => (
             <button
               key={t}
               onClick={() => setSelectedTime(t)}
-              className={`px-5 py-2 rounded-xl cursor-pointer ${
+              className={`px-5 py-2 rounded-xl ${
                 selectedTime === t ? "bg-purple-600 text-white" : "bg-blue-800"
               }`}
             >
@@ -163,19 +211,40 @@ export default function InputBox({
             </button>
           ))}
 
-          <DropDown />
-          <AiSummary/>
+          <DropDown difficulty={difficulty} setDifficulty={setDifficulty} />
+
+          <button
+            onClick={() => {
+              console.log("heeloo here");
+              console.log("API KEY:", process.env.GEMINI_API_KEY);
+              route.push("/Summarize");
+            }}
+            disabled={!testCompleted}
+            className={`px-6 py-2 rounded-xl transition ${
+              testCompleted
+                ? "bg-linear-to-r from-purple-500 to-pink-500 hover:opacity-90 cursor-pointer"
+                : "bg-gray-500 cursor-not-allowed opacity-50"
+            }`}
+          >
+            Ai Summarize
+          </button>
 
           <button
             onClick={startTest}
-            className="px-6 py-2 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white cursor-pointer"
+            disabled={!canStartText}
+            className={`px-6 py-2 rounded-xl text-white transition
+              ${
+                canStartText
+                  ? "bg-linear-to-r from-purple-500 to-pink-500 hover:opacity-90 cursor-pointer"
+                  : "bg-gray-500 cursor-not-allowed opacity-50"
+              }
+              `}
           >
             Start Typing
           </button>
         </div>
       </div>
 
-      {/* CHART */}
       {chartData.length > 0 ? (
         <Chart chartData={chartData} />
       ) : (

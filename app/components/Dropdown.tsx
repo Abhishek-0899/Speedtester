@@ -1,12 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BiDownArrow } from "react-icons/bi";
 
-export default function DropDown() {
-  const options = ["Easy", "Medium", "Hard"];
+export default function DropDown({ difficulty, setDifficulty }) {
+  const options = ["Easy", "Medium", "Hard", "Random"];
 
   const [open, setOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  useEffect(() => {
+    const idx = options.indexOf(difficulty);
+    if (idx !== -1) setSelectedIndex(idx);
+  }, [difficulty]);
 
   const handleKeyDown = (e) => {
     if (e.key == "ArrowDown") {
@@ -18,7 +23,12 @@ export default function DropDown() {
       e.preventDefault();
       setSelectedIndex((prev) => (prev === 0 ? options.length - 1 : prev - 1));
     }
-    if (e.key === "Enter" || e.key === "Escape") {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      setDifficulty(options[selectedIndex]);
+      setOpen(false);
+    }
+    if (e.key === "Escape") {
       e.preventDefault();
       setOpen(false);
     }
@@ -56,6 +66,7 @@ export default function DropDown() {
               key={otp}
               onClick={() => {
                 setSelectedIndex(index);
+                setDifficulty(otp);
                 setOpen(false);
               }}
               className={`w-full text-left rounded-xl px-4 py-2 hover:bg-gray-700 transition-colors

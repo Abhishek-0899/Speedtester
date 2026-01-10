@@ -46,6 +46,12 @@ export default function Navbar() {
             Dashboard
           </Link>
           <Link
+            href="/Summarize"
+            className="rounded-xl px-4 py-1.5 hover:bg-blue-900 transition"
+          >
+            Ai Summarize
+          </Link>
+          <Link
             href="/Stats"
             className="rounded-xl px-4 py-1.5 hover:bg-blue-900 transition"
           >

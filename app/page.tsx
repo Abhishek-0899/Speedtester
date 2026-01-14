@@ -5,6 +5,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Faq from "../app/components/Faq";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -95,6 +96,10 @@ export default function Home() {
                 </div>
               ))}
             </div>
+          </div>
+          {/* FAqs */}
+          <div className="mt-20">
+            <Faq />
           </div>
         </div>
       </section>

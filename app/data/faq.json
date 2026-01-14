@@ -1,0 +1,22 @@
+[
+  {
+    "question": "How do I start a typing session?",
+    "answer": "Select a difficulty level (Easy, Medium, Hard, Expert) from the dropdown and click 'Start' to begin your typing session."
+  },
+  {
+    "question": "What is the AI-generated summary?",
+    "answer": "After each session, an AI summary analyzes your performance, highlights mistakes, and provides personalized tips to improve your typing speed and accuracy."
+  },
+  {
+    "question": "What do the performance charts show?",
+    "answer": "Charts visualize your typing speed (WPM), accuracy, and progress over time, helping you track improvement across sessions."
+  },
+  {
+    "question": "Can I choose specific difficulty levels to practice?",
+    "answer": "Yes, you can select any difficulty level before starting. The typing exercises and AI summary adapt to the chosen level."
+  },
+  {
+    "question": "Is my typing data saved?",
+    "answer": "Yes, all completed sessions are stored locally, so you can review your performance history and AI summaries anytime."
+  }
+]

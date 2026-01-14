@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
 import TypingText from "./typingtext";
 import Chart from "./chart";
@@ -8,18 +7,58 @@ import { onAuthStateChanged } from "firebase/auth";
 import DropDown from "./Dropdown";
 import { useRouter } from "next/navigation";
 
+function updateStreak(
+  lastDate: string | null,
+  currentStreak: number,
+  maxStreak: number
+) {
+  const today = new Date().toISOString().split("T")[0];
+  if (!lastDate) return { currentStreak: 1, lastDate: today, maxStreak: 1 };
+
+  const diff =
+    (new Date(today).getTime() - new Date(lastDate).getTime()) /
+    (1000 * 60 * 60 * 24);
+
+  if (diff < 1) return { currentStreak, maxStreak, lastDate };
+  if (diff < 2) {
+    const newStreak = currentStreak + 1;
+    return {
+      currentStreak: newStreak,
+      maxStreak: Math.max(maxStreak, newStreak),
+      lastDate: today,
+    };
+  }
+
+  return { currentStreak: 1, maxStreak, lastDate: today };
+}
+
 export default function InputBox({
   selectedTime,
   setSelectedTime,
   setWPM,
   setAccuracy,
+  setcurrentDay,
 }: {
   selectedTime: number;
   setSelectedTime: (time: number) => void;
   setWPM: (wpm: number) => void;
   setAccuracy: (accuracy: number) => void;
+  setcurrentDay: (day: number) => void;
 }) {
   const route = useRouter();
+
+  // streak key
+
+  const streakKey = "streak_local";
+  /* 🔥 LOAD STREAK ON INPUTBOX MOUNT */
+
+  useEffect(() => {
+    const saved = localStorage.getItem(streakKey);
+    if (!saved) return;
+
+    const { streak } = JSON.parse(saved);
+    setcurrentDay(streak);
+  }, []);
 
   // Enable btn on time select
   const [testCompleted, setTextCompleted] = useState(false);
@@ -46,12 +85,12 @@ export default function InputBox({
   const [difficulty, setDifficulty] = useState("Easy");
 
   // ✅ FIXED LOGIC (returns boolean)
-  const isEasy = (text) => text.length <= 10 && !/[^a-zA-Z0-9\s]/.test(text);
+  const isEasy = (text: string) => text.length <= 10 && !/[^a-zA-Z0-9\s]/.test(text);
 
-  const isMedium = (text) =>
+  const isMedium = (text: string) =>
     text.length > 10 && text.length <= 50 && /[.,!?;:]/.test(text);
 
-  const isHard = (text) => text.length > 100 && /[^a-zA-Z0-9\s]/.test(text);
+  const isHard = (text: string) => text.length > 100 && /[^a-zA-Z0-9\s]/.test(text);
 
   // ---------- LOAD SESSION ----------
   const storageKey = user ? `typingSession_${user.uid}` : `typingSession_local`;
@@ -59,7 +98,12 @@ export default function InputBox({
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     setSession(saved ? JSON.parse(saved) : []);
-    console.log("Loaded sessions from", storageKey, "count:", saved ? JSON.parse(saved).length : 0);
+    console.log(
+      "Loaded sessions from",
+      storageKey,
+      "count:",
+      saved ? JSON.parse(saved).length : 0
+    );
   }, [storageKey]);
 
   useEffect(() => {
@@ -74,7 +118,7 @@ export default function InputBox({
     const res = await fetch(API);
     const data = await res.json();
 
-    const cleaned = data.map((item) => item.body.replace(/\n/g, " "));
+    const cleaned = data.map((item: { body: string }) => item.body.replace(/\n/g, " "));
 
     let pool = [];
 
@@ -145,6 +189,18 @@ export default function InputBox({
         date: new Date().toISOString(),
       },
     ]);
+    const saved = localStorage.getItem(streakKey);
+    const parsed = saved
+      ? JSON.parse(saved)
+      : { currentStreak: 0, maxStreak: 0, lastDate: null };
+
+    const result = updateStreak(
+      parsed.lastDate || null,
+      parsed.maxStreak,
+      parsed.streak || 0
+    );
+    localStorage.setItem(streakKey, JSON.stringify(result));
+    setcurrentDay(result.currentStreak);
   };
 
   // ---------- CHART DATA ----------
@@ -199,7 +255,7 @@ export default function InputBox({
         <div className="flex justify-center gap-4 mt-4">
           <h1 className="text-center mt-2">Time :</h1>
 
-          {[10,20, 30, 60].map((t) => (
+          {[10, 20, 30, 60].map((t) => (
             <button
               key={t}
               onClick={() => setSelectedTime(t)}

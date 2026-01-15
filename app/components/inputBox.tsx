@@ -66,6 +66,7 @@ export default function InputBox({
   const canStartText = Boolean(selectedTime);
   // ---------- API  ----------
   const API = "https://jsonplaceholder.typicode.com/comments";
+  // const API = "https://dummyjson.com/comments?limit=500";
 
   // ---------- CURRENT USER ----------
   const [user, setUser] = useState<typeof null | { uid: string }>(null);
@@ -85,12 +86,14 @@ export default function InputBox({
   const [difficulty, setDifficulty] = useState("Easy");
 
   // ✅ FIXED LOGIC (returns boolean)
-  const isEasy = (text: string) => text.length <= 10 && !/[^a-zA-Z0-9\s]/.test(text);
+  const isEasy = (text: string) =>
+    text.length <= 10 && !/[^a-zA-Z0-9\s]/.test(text);
 
   const isMedium = (text: string) =>
     text.length > 10 && text.length <= 50 && /[.,!?;:]/.test(text);
 
-  const isHard = (text: string) => text.length > 100 && /[^a-zA-Z0-9\s]/.test(text);
+  const isHard = (text: string) =>
+    text.length > 100 && /[^a-zA-Z0-9\s]/.test(text);
 
   // ---------- LOAD SESSION ----------
   const storageKey = user ? `typingSession_${user.uid}` : `typingSession_local`;
@@ -117,8 +120,9 @@ export default function InputBox({
   const loadText = async () => {
     const res = await fetch(API);
     const data = await res.json();
-
-    const cleaned = data.map((item: { body: string }) => item.body.replace(/\n/g, " "));
+    const cleaned = data.map((item: { body: string }) =>
+      item.body.replace(/\n/g, " ")
+    );
 
     let pool = [];
 

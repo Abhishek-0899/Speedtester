@@ -39,7 +39,7 @@ export default function Home() {
 
               <Link
                 href="/Dashboard"
-                className="inline-block bg-blue-800 hover:bg-blue-900 transition px-6 py-3 rounded-xl text-white font-medium
+                className="inline-block bg-blue-800 hover:bg-blue-900 transition px-6 py-3  text-2xl rounded-xl text-white font-medium
                 md:animate-[float_5s_ease-in-out_infinite]"
               >
                 Start Typing Test
@@ -54,7 +54,7 @@ export default function Home() {
                 alt="Typing dashboard preview"
                 width={600}
                 height={400}
-                className="relative z-10 w-full h-auto md:animate-[float_8s_ease-in-out_infinite]"
+                className="relative z-10 w-full h-auto md:animate-[float_8s_ease-in-out_infinite] animate-dissolve"
                 priority
               />
             </div>

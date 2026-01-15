@@ -11,9 +11,6 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Hide navbar on auth pages
-  if (pathname === "/login" || pathname === "/signup") return null;
-
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
@@ -21,14 +18,23 @@ export default function Navbar() {
     return () => unsub();
   }, []);
 
+  // Hide navbar on auth pages
+  if (pathname === "/login" || pathname === "/signup") return null;
+
   const handleLogout = async () => {
     await signOut(auth);
     router.push("/");
   };
 
+  const navLinks = [
+    { href: "/Dashboard", label: "Dashboard" },
+    { href: "/Summarize", label: " Ai Summarize" },
+    { href: "/Stats", label: "Statistics" },
+  ];
+
   return (
     <nav className="h-20 flex items-center px-4 md:px-10 shadow-lg shadow-black/70">
-      <div className="flex justify-between items-center w-full">
+      <div className="flex justify-between items-center w-full text-2xl">
         <div className="flex items-center gap-3">
           <Image src="/pacman1.png" alt="logo" width={60} height={40} />
           <button onClick={() => router.push("/")}>
@@ -39,24 +45,20 @@ export default function Navbar() {
         </div>
 
         <div className="hidden md:flex items-center gap-8 text-white font-semibold">
-          <Link
-            href="/Dashboard"
-            className="rounded-xl px-4 py-1.5 hover:bg-blue-900 transition"
-          >
-            Dashboard
-          </Link>
-          <Link
-            href="/Summarize"
-            className="rounded-xl px-4 py-1.5 hover:bg-blue-900 transition"
-          >
-            Ai Summarize
-          </Link>
-          <Link
-            href="/Stats"
-            className="rounded-xl px-4 py-1.5 hover:bg-blue-900 transition"
-          >
-            Statistics
-          </Link>
+          {navLinks.map((link, index) => (
+            <Link
+              key={index}
+              href={user ? link.href : "#"}
+              className={`rounded-xl px-4 py-1.5 hover:bg-blue-900 transition 
+            ${
+              user
+                ? " hover:bg-blue-900 text-white cursor-pointer"
+                : "text-gray-800 pointer-events-none"
+            }`}
+            >
+              {link.label}
+            </Link>
+          ))}
 
           {!user ? (
             <>
@@ -77,16 +79,18 @@ export default function Navbar() {
           ) : (
             <>
               {user.photoURL ? (
-                <img
+                <Image
                   src={user.photoURL}
                   alt="profile"
-                  className="w-9 h-9 rounded-full border border-white/20 cursor-pointer"
+                  width={60}
+                  height={36}
+                  className="rounded-full border border-white/20 cursor-pointer"
                 />
               ) : (
                 <Image
                   src="/avatar.png"
                   alt="profile"
-                  width={36}
+                  width={50}
                   height={36}
                   className="rounded-full border border-white/20 cursor-pointer"
                 />

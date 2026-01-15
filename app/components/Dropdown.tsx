@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { BiDownArrow } from "react-icons/bi";
 
-export default function DropDown({ difficulty, setDifficulty }) {
+export default function DropDown({ difficulty, setDifficulty }: any) {
   const options = ["Easy", "Medium", "Hard", "Random"];
 
   const [open, setOpen] = useState(false);
@@ -13,7 +13,7 @@ export default function DropDown({ difficulty, setDifficulty }) {
     if (idx !== -1) setSelectedIndex(idx);
   }, [difficulty]);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: any) => {
     if (e.key == "ArrowDown") {
       e.preventDefault();
       setOpen(true);

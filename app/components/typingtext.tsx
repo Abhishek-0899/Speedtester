@@ -1,9 +1,9 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 
-export default function TypingText({ text, onComplete, onTyping, disabled }) {
+export default function TypingText({ text, onComplete, onTyping, disabled }: any) {
   const [input, setInput] = useState("");
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // focus always
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function TypingText({ text, onComplete, onTyping, disabled }) {
     setInput("");
   }, [text]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     if (disabled) return;
 
     const value = e.target.value;
@@ -43,7 +43,7 @@ export default function TypingText({ text, onComplete, onTyping, disabled }) {
       onClick={() => inputRef.current?.focus()}
       className="relative font-mono leading-8 select-none whitespace-pre-wrap cursor-text"
     >
-      {text.split("").map((char, index) => {
+      {text.split("").map((char: any, index: number) => {
         let className = "text-gray-400 text-[19px]";
 
         if (index < input.length) {

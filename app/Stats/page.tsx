@@ -17,7 +17,7 @@ export default function Stats() {
         const session = saved ? JSON.parse(saved) : [];
 
         /* ---------- CHART DATA ---------- */
-        const data = session.map((s) => ({
+        const data = session.map((s: any) => ({
           name: new Date(s.date).toLocaleString("en-IN", {
             day: "2-digit",
             month: "short",

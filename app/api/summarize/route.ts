@@ -23,7 +23,7 @@ export async function GET() {
     const modelsData = await listRes.json();
 
     // Filter models that support generateContent
-    const genModels = modelsData.models.filter((m) =>
+    const genModels = modelsData.models.filter((m: any) =>
       m.supportedGenerationMethods?.includes("generateContent")
     );
 
@@ -55,13 +55,13 @@ export async function GET() {
     const generatedData = await genRes.json();
 
     return NextResponse.json({
-      availableModels: genModels.map((m) => m.name),
+      availableModels: genModels.map((m: any) => m.name),
       usedModel: modelToUse,
       prompt,
       generatedContent: generatedData,
     });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Server error", details: err.message }, { status: 500 });
+    return NextResponse.json({ error: "Server error", details: err instanceof Error ? err.message : "Unknown error" }, { status: 500 });
   }
 }

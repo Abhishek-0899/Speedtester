@@ -69,7 +69,7 @@ export default function InputBox({
   // const API = "https://dummyjson.com/comments?limit=500";
 
   // ---------- CURRENT USER ----------
-  const [user, setUser] = useState<typeof null | { uid: string }>(null);
+  const [user, setUser] = useState<null | { uid: string }>(null);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) =>
       setUser(currentUser)
@@ -230,7 +230,7 @@ export default function InputBox({
               <TypingText
                 text={text}
                 disabled={timeLeft === 0}
-                onTyping={(typedWords, totalWords) => {
+                onTyping={(typedWords: any, totalWords: any) => {
                   const wpm = Math.round((typedWords / selectedTime) * 60);
                   const acc = Math.round((typedWords / totalWords) * 100);
 

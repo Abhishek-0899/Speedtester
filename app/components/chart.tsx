@@ -12,13 +12,13 @@ import {
 } from "recharts";
 
 /* ---------------- CUSTOM TOOLTIP ---------------- */
-function CustomTooltip({ active, payload, label }) {
+function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload) return null;
 
   return (
     <div className="rounded-xl bg-[#0f172a] border border-white/10 px-4 py-3 text-sm shadow-xl">
       <p className="text-gray-300 font-semibold mb-2">{label}</p>
-      {payload.map((item) => (
+      {payload.map((item: any) => (
         <p key={item.dataKey} className="flex items-center gap-2 text-gray-200">
           <span
             className="w-2 h-2 rounded-full"
@@ -32,7 +32,7 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 /* ---------------- CHART ---------------- */
-export default function Chart({ chartData }) {
+export default function Chart({ chartData }: any) {
   if (!chartData || chartData.length === 0) {
     return (
       <div className="mt-20 mb-20 flex items-center justify-center h-[300px] rounded-2xl border border-white/10 bg-[#12172a]">

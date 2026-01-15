@@ -8,29 +8,36 @@ export default function Dashboard() {
   const [selectedTime, setSelectedTime] = useState(0);
   const [wpm, setWPM] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
-  const [currentday, setCurrentday] = useState(() => {
+  const [currentday, setCurrentday] = useState(0);
+  const [maxStreak, setMaxStreak] = useState(0);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     const saved = localStorage.getItem("streak_local");
-    if (!saved) return 0;
-    const { currentday = 0, lastDate } = JSON.parse(saved);
+    if (!saved) {
+      setCurrentday(0);
+      setMaxStreak(0);
+      return;
+    }
+
+    const { currentday = 0, maxStreak = 0, lastDate } = JSON.parse(saved);
+
+    // auto reset if day missed
     const today = new Date().toISOString().split("T")[0];
     if (lastDate) {
       const diff =
         (new Date(today).getTime() - new Date(lastDate).getTime()) /
         (1000 * 60 * 60 * 24);
-      if (diff >= 2) return 0;
-      return currentday;
-    }
-    return currentday;
-  });
-  const [maxStreak] = useState(() => {
-    const saved = localStorage.getItem("streak_local");
-    if (!saved) return 0;
-    const { maxStreak = 0 } = JSON.parse(saved);
-    return maxStreak;
-  });
 
-  useEffect(() => {
-    // Effect can be removed if no other side effects are needed
+      if (diff >= 2) {
+        setCurrentday(0);
+      } else {
+        setCurrentday(currentday);
+      }
+    }
+
+    setMaxStreak(maxStreak);
   }, []);
 
   return (

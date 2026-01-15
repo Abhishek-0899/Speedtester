@@ -8,35 +8,29 @@ export default function Dashboard() {
   const [selectedTime, setSelectedTime] = useState(0);
   const [wpm, setWPM] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
-  const [currentday, setCurrentday] = useState(0);
-  const [maxStreak, setMaxStreak] = useState(0);
-
-  useEffect(() => {
+  const [currentday, setCurrentday] = useState(() => {
     const saved = localStorage.getItem("streak_local");
-    if (!saved) {
-      setCurrentday(0);
-      setMaxStreak(0);
-      return;
-    }
-
-    const { currentday = 0, maxStreak = 0, lastDate } = JSON.parse(saved);
-
-    // auto reset if day missed
-
+    if (!saved) return 0;
+    const { currentday = 0, lastDate } = JSON.parse(saved);
     const today = new Date().toISOString().split("T")[0];
     if (lastDate) {
       const diff =
         (new Date(today).getTime() - new Date(lastDate).getTime()) /
         (1000 * 60 * 60 * 24);
-
-      if (diff >= 2) {
-        setCurrentday(0);
-      } else {
-        setCurrentday(currentday);
-      }
+      if (diff >= 2) return 0;
+      return currentday;
     }
+    return currentday;
+  });
+  const [maxStreak] = useState(() => {
+    const saved = localStorage.getItem("streak_local");
+    if (!saved) return 0;
+    const { maxStreak = 0 } = JSON.parse(saved);
+    return maxStreak;
+  });
 
-    setMaxStreak(maxStreak);
+  useEffect(() => {
+    // Effect can be removed if no other side effects are needed
   }, []);
 
   return (
@@ -88,7 +82,7 @@ export default function Dashboard() {
 
 /* ---------------- CARD ---------------- */
 
-function StatCard({ title, value, icon, footer }) {
+function StatCard({ title, value, icon, footer }: { title: string; value: string | number; icon: React.ReactNode; footer?: string }) {
   return (
     <div className="border rounded-2xl overflow-hidden bg-[#12172a] shadow-md hover:shadow-purple-600 transition-shadow">
       <h1 className="text-3xl mt-3 mb-5 text-center font-semibold">{title}</h1>

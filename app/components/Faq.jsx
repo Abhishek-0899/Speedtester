@@ -11,7 +11,7 @@ const Faq = () => {
   return (
     <div className="w-full mx-auto">
       <h1 className="text-red-300 text-4xl mt-3 mb-4 text-center font-semibold">
-        FAQ&apos;s
+        FAQ's
       </h1>
       {faqs.map((item, index) => (
         <div

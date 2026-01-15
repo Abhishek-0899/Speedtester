@@ -55,7 +55,6 @@ export default function Navbar() {
               </h1>
             </button>
           </div>
-
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8 text-white font-semibold">
             {navLinks.map((link) => (

@@ -43,9 +43,10 @@ export default function Dashboard() {
     <AuthGuard>
       <div className="bg-[#0b0f1a] min-h-screen text-white p-4 mx-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mt-3">
-          <StatCard
+         <StatCard
             title="WPM"
             value={wpm}
+            footer={wpm ? `${wpm} words/min` : "Complete a typing session to unlock insights."}
             icon={<ArrowRight className="w-10 h-5" />}
           />
 

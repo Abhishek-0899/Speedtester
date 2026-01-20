@@ -25,14 +25,23 @@ Deployed on Vercel for easy remote access
 
 🏛️ Project Architecture
 Speedtester/
+
 ├─ app/                 # Main Next.js pages and components
+
 │  ├─ components/       # Reusable components (Timer, WPMDisplay, Navbar, etc.)
+
 │  ├─ pages/            # Next.js pages (Home, TestPage, etc.)
+
 ├─ recharts/            # Chart components for performance visualization
+
 ├─ public/              # Static assets (images, icons)
+
 ├─ styles/              # Global and component-level styles
+
 ├─ next.config.ts       # Next.js configuration
+
 ├─ package.json         # Project dependencies and scripts
+
 ├─ README.md            # Documentation
 
 

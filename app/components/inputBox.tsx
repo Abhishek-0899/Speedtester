@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 function updateStreak(
   lastDate: string | null,
   currentStreak: number,
-  maxStreak: number
+  maxStreak: number,
 ) {
   const today = new Date().toISOString().split("T")[0];
   if (!lastDate) return { currentStreak: 1, lastDate: today, maxStreak: 1 };
@@ -72,7 +72,7 @@ export default function InputBox({
   const [user, setUser] = useState<null | { uid: string }>(null);
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) =>
-      setUser(currentUser)
+      setUser(currentUser),
     );
     return () => unsub();
   }, []);
@@ -105,7 +105,7 @@ export default function InputBox({
       "Loaded sessions from",
       storageKey,
       "count:",
-      saved ? JSON.parse(saved).length : 0
+      saved ? JSON.parse(saved).length : 0,
     );
   }, [storageKey]);
 
@@ -118,10 +118,10 @@ export default function InputBox({
   const [text, setText] = useState("");
 
   const loadText = async () => {
-    const res = await fetch(API);
+    const res = await fetch(API, { cache: "no-store" });
     const data = await res.json();
     const cleaned = data.map((item: { body: string }) =>
-      item.body.replace(/\n/g, " ")
+      item.body.replace(/\n/g, " "),
     );
 
     let pool = [];
@@ -151,7 +151,7 @@ export default function InputBox({
     if (!modalOpen) return;
     const interval = setInterval(
       () => setTimeLeft((t) => Math.max(t - 1, 0)),
-      1000
+      1000,
     );
     return () => clearInterval(interval);
   }, [modalOpen]);
@@ -201,7 +201,7 @@ export default function InputBox({
     const result = updateStreak(
       parsed.lastDate || null,
       parsed.maxStreak,
-      parsed.streak || 0
+      parsed.streak || 0,
     );
     localStorage.setItem(streakKey, JSON.stringify(result));
     setcurrentDay(result.currentStreak);
@@ -275,8 +275,6 @@ export default function InputBox({
 
           <button
             onClick={() => {
-              console.log("heeloo here");
-              console.log("API KEY:", process.env.GEMINI_API_KEY);
               route.push("/Summarize");
             }}
             disabled={!testCompleted}

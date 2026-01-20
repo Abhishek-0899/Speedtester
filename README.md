@@ -15,6 +15,7 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+to run Click link [https://speedtester-cgn5-m82nyqr5s-abhishek-kumar-pandits-projects.vercel.app/]
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

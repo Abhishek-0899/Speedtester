@@ -1,37 +1,74 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Speedtester 🖊️🚀
 
-## Getting Started
 
-First, run the development server:
 
-```bash
+
+Speedtester is an interactive typing test web app built with Next.js and React that measures typing speed (WPM) and accuracy in real time. It features dynamic AI‑generated text challenges so every session feels fresh and helps users practice better.
+
+🚀 Features
+
+🔡 Typing Speed (WPM) & Accuracy tracked live.
+
+🤖 AI‑Generated text for varied challenge content.
+
+📱 Responsive UI for desktop and mobile.
+
+🕐 Timer functionality during tests.
+
+📈 Performance visuals (optional charts/stats).
+
+⚡ Instant test start with clear feedback.
+
+🧱 Tech Stack
+
+Frontend: Next.js + React
+
+Styling: CSS / Tailwind (if used)
+
+AI Text: Generated via integrated script/algorithm
+
+Deployment: Hosted on Vercel
+
+🛠️ Installation & Setup
+
+Clone the repo
+
+git clone https://github.com/Abhishek-0899/Speedtester.git
+
+
+Navigate to project folder
+
+cd Speedtester
+
+
+Install dependencies
+
+npm install
+
+
+Start development server
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-to run Click link [https://speedtester-cgn5-m82nyqr5s-abhishek-kumar-pandits-projects.vercel.app/]
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open in browser
+Visit http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🎯 Usage
 
-## Learn More
+Open the app in the browser.
 
-To learn more about Next.js, take a look at the following resources:
+Click Start Test.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Begin typing the text shown on screen.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Watch your real‑time WPM and accuracy stats.
 
-## Deploy on Vercel
+Finish the test and try again to improve scores.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+📌 Demo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Live version hosted on Vercel:
+➡️ https://speedtester‑cgn5‑m82nyqr5s‑abhishek‑kumar‑pandits‑projects.vercel.app/
+
+(Add screenshots or GIFs here for better visual appeal)

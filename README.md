@@ -1,63 +1,36 @@
-Speedtester 🖊️⚡
+# Speedtester 🏎️⌨️
 
+A **typing speed tester** web app built with **Next.js & React**. Track your typing speed (WPM), accuracy, and performance over time. Optionally, practice with **AI-generated text** challenges and visualize your stats with charts.
 
+---
 
+## 🚀 Features
 
-Speedtester is an interactive typing speed testing web app built with Next.js and React. It measures typing speed (WPM) and accuracy in real-time and offers optional charts for performance tracking. The app can be enhanced with AI-generated text challenges to make practice more dynamic.
+- Real-time **Words Per Minute (WPM)** & **Accuracy** tracking.
+- **AI-generated custom text challenges** (optional).
+- **Performance history** and charts using Recharts.
+- Responsive UI with optional **themes / dark mode**.
+- Simple **user-friendly interface**.
+- Ready for **remote deployment** (Vercel / ngrok).
 
-🚀 Features
+---
 
-Real-time WPM and accuracy updates
+## 🏛️ Project Architecture
 
-AI-generated text for varied typing challenges
-
-Clean, responsive UI for desktop and mobile
-
-Instant test start with multiple paragraphs to practice
-
-Optional charts to visualize progress (using Recharts)
-
-Timer to track typing duration
-
-Fast performance, optimized for modern browsers
-
-Deployed on Vercel for easy remote access
-
-🏛️ Project Architecture
+```plaintext
 Speedtester/
-
-├─ app/                 # Main Next.js pages and components
-
-│  ├─ components/       # Reusable components (Timer, WPMDisplay, Navbar, etc.)
-
-│  ├─ pages/            # Next.js pages (Home, TestPage, etc.)
-
-├─ recharts/            # Chart components for performance visualization
-
-├─ public/              # Static assets (images, icons)
-
-├─ styles/              # Global and component-level styles
-
-├─ next.config.ts       # Next.js configuration
-
-├─ package.json         # Project dependencies and scripts
-
-├─ README.md            # Documentation
+├─ app/                    # Main Next.js pages and components
+│  ├─ components/          # Reusable components (Timer, WPMDisplay, Navbar, etc.)
+│  ├─ pages/               # Next.js pages (Home, TestPage, Results, etc.)
+├─ recharts/               # Chart components for performance visualization
+├─ public/                 # Static assets (images, icons)
+├─ styles/                 # Global and component-level styles
+├─ next.config.ts          # Next.js configuration
+├─ package.json            # Project dependencies and scripts
+└─ README.md               # Project documentation
 
 
-Flow Overview:
-
-Home Page / Dashboard → Shows start button, instructions, and optional past performance stats.
-
-Typing Test Component → Displays text to type, starts timer, captures user input.
-
-Performance Calculations → Updates WPM and accuracy live.
-
-Charts / Progress Tracking → Optional visualization of typing statistics.
-
-Deployment → Hosted on Vercel for easy remote access.
-
-💻 Installation (Local & Remote)
+⚡ Installation
 Local Setup
 
 Clone the repository:
@@ -65,91 +38,64 @@ Clone the repository:
 git clone https://github.com/Abhishek-0899/Speedtester.git
 cd Speedtester
 
-
 Install dependencies:
-
 npm install
-
-
-Start development server:
-
+Run the development server:
 npm run dev
 
+Remote Setup
 
-Open in browser:
+Vercel Deployment: Push your branch to GitHub → Vercel auto-deploys a preview URL.
 
-http://localhost:3000
+ngrok (for local sharing):
 
-Remote Access
+npm run dev
+npx ngrok http 3000
 
-To share your local dev server externally, you can use ngrok:
-
-ngrok http 3000
-
-
-This gives a public URL for collaborators to access your running app.
-
-For production/testing, Vercel Preview Deployments automatically provide live URLs for each branch/pull request.
 
 🎯 Usage
 
-Open the app (locally or via Vercel/ngrok).
+Open the app locally or via a Vercel/ngrok preview.
 
 Click Start Test.
 
 Type the displayed text (AI-generated text if enabled).
 
-Monitor WPM and Accuracy in real time.
+Monitor WPM and Accuracy in real-time.
 
 Complete the test and try again to improve your score.
 
+
 🤝 Contribution Guidelines
 
-Fork the repository on GitHub.
+We welcome contributions! Follow these steps:
 
-Clone your fork and create a feature branch:
+Fork the repository.
+
+Clone your fork:
+
+git clone https://github.com/<your-username>/Speedtester.git
+cd Speedtester
+
+Create a feature branch:
 
 git checkout -b feature/<feature-name>
 
-
-Make your changes, commit with descriptive messages:
+Make your changes and commit with descriptive messages:
 
 git commit -m "Add new typing challenge feature"
 
-
-Push your branch to your fork:
-
+Push your branch:
 git push origin feature/<feature-name>
 
+🎨 Possible Enhancements
 
-Open a Pull Request to the main repository.
+🌐 AI-generated custom text challenges.
 
-Best Practices:
+📊 Advanced performance history & analytics.
 
-Follow modular architecture; keep components reusable.
+🎨 Themes / dark mode.
 
-Document any new AI text features or charts.
+👤 User login & profiles.
 
-Test all changes locally or on Vercel preview URLs before PR.
 
-📦 Tech Stack
-
-Framework: Next.js & React
-
-Styling: CSS / Tailwind (optional)
-
-Charts: Recharts (optional)
-
-Deployment: Vercel
-
-📌 Possible Enhancements
-
-🌐 AI-generated custom text challenges
-
-📊 Performance history and saved stats
-
-🎨 Themes / dark mode
-
-👤 User login & profiles
-
-📈 Advanced charts and analytics
